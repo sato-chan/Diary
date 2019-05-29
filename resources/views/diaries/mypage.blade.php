@@ -1,11 +1,12 @@
 @extends('layout')
 
 @section('title')
-Diary 一覧
+My page
+
 @endsection
 
 @section('content')
-	<a href="{{ route('diary.create') }}" class="btn btn-primary">新規投稿</a>
+<a href="{{ route('diary.create') }}" class="btn btn-primary">新規投稿</a>
 	@foreach($diaries as $diary)
 	<div class="m-4 p-4 border border-primary">
 		<p>{{ $diary['title'] }}</p>
@@ -22,16 +23,7 @@ Diary 一覧
 			<button class="btn btn-danger">削除</button>
 		</form>
 		@endif
-		{{---いいね機能まわりの表示--}}
-		<div class="mt-3 ml-3">
-			<form method="POST" action="{{ route('diary.like',['id'=>$diary['id']])}}">
-		@csrf
-				<button type="submit" class="btn btn-outline-primary">
-					<i class="fas fa-thumbs-up"></i>
-					<span>{{ $diary->likes->count() }}</span>
-				</button>
-			</form>
-		</div>
+
 	</div>
 	@endforeach
 @endsection
