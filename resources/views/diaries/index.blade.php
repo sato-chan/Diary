@@ -23,15 +23,30 @@ Diary 一覧
 		</form>
 		@endif
 		{{---いいね機能まわりの表示--}}
-		<div class="mt-3 ml-3">
-			<form method="POST" action="{{ route('diary.like',['id'=>$diary['id']])}}">
+		@if(Auth::check() && $diary->likes->contains(function($user){
+			return $user->id == Auth::user()->id;
+		}))
+		{{-- いいねされてたら、いいねを取り消すボタンを設置　--}}
+			<form style="display: inline;" method="POST" action="{{ route('diary.dislike',['id'=>$diary['id']])}}">
 		@csrf
+
+				<button type="submit" class="btn btn-outline-danger">
+					<i class="fas fa-thumbs-up"></i>
+					<span>{{ $diary->likes->count() }}</span>
+				</button>
+			</form>
+		@else
+		{{-- いいねされてなければ、いいねボタンを設置　--}}
+			<form style="display: inline;" method="POST" action="{{ route('diary.like',['id'=>$diary['id']])}}">
+			@csrf
+
 				<button type="submit" class="btn btn-outline-primary">
 					<i class="fas fa-thumbs-up"></i>
 					<span>{{ $diary->likes->count() }}</span>
 				</button>
 			</form>
-		</div>
+			@endif
+
 	</div>
 	@endforeach
 @endsection

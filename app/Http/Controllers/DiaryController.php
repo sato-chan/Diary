@@ -114,5 +114,13 @@ class DiaryController extends Controller
         return redirect()->route('diary.index');
     }
 
+    function dislike($id){
+        $diary = Diary::where('id',$id)->with('likes')->first();
+        //SELECT * FROM diaries JOIN
+        $diary->likes()->detach(Auth::user()->id);
+        //DELETE FROM likes WHERE diary_id=$diary->id AND user_id=Auth::user()->id
+
+        return redirect()->route('diary.index');
+    }
 
 }
